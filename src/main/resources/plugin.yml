@@ -1,0 +1,21 @@
+author: AngelO
+name: AngeloAchievements
+prefix: AngeloACHIEVEMENTS
+version: 0.2
+main: com.xangeldlc.Main
+api-version: "1.20"
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      # Load order is relative to the dependency. So here PlaceholderAPI loads before our plugin.
+      load: BEFORE
+      required: false
+
+#El comando funciona pero no recarga el archivo..
+commands:
+  reloadangeloachievements:
+    description: Reloads the Angelo Achievements configuration.
+    usage: /reloadangeloachievements
+    permission: angeloachievements.reload
+    permission-message: You don't have permission to execute this command.
