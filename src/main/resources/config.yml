@@ -33,6 +33,7 @@
 #     commands:  ⬅ Commands that will execute upon completing the achievement. Use '%player%' for the player's name.
 #       - "give %player% diamond 1"
 #       - "[BROCAST] %player% has killed their first mob!" ⬅ Broadcasts a message to all players.
+#       - "[SOUND] entity_player_levelup 1.0 1.0" ⬅ Plays a sound when the achievement is completed.
 
 # Default message that will be shown if an achievement does not have a specific configuration.
 default_message: "<green>%player% has earned the achievement %achievements%!"
@@ -56,3 +57,4 @@ achievements:
     commands:
       - "give %player% diamond 1"
       - "[BROCAST] <gold>%player% has completed an achievement and was rewarded with 1 diamond."
+      - "[SOUND] entity_player_levelup 1.0 1.0"  # Plays a sound with default volume and pitch.

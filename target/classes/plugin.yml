@@ -1,7 +1,7 @@
 author: AngelO
 name: AngeloAchievements
 prefix: AngeloACHIEVEMENTS
-version: 0.2
+version: 0.4
 main: com.xangeldlc.Main
 api-version: "1.20"
 
@@ -12,7 +12,6 @@ dependencies:
       load: BEFORE
       required: false
 
-#El comando funciona pero no recarga el archivo..
 commands:
   reloadangeloachievements:
     description: Reloads the Angelo Achievements configuration.

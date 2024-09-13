@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,12 +30,16 @@ public class AchievementListener implements Listener {
 
         // Ignore if it is a recipe
         if (type.startsWith("minecraft:recipes")) {
-            return; 
+            return;
         }
 
         // Handling normal achievements
         List<String> customMessages = configManager.getAchievementMessages(type);
         String achievementName = PlainTextComponentSerializer.plainText().serialize(advancement.displayName());
+
+        if (customMessages.isEmpty() || (customMessages.size() == 1 && customMessages.get(0).trim().isEmpty())) {
+            return; 
+        }
 
         for (String message : customMessages) {
             // Use PlaceholderAPI to replace placeholders
@@ -97,11 +102,42 @@ public class AchievementListener implements Listener {
                     formattedCommand = PlaceholderAPI.setPlaceholders(player, formattedCommand);
                 }
 
+                // Handle broadcast commands
                 if (formattedCommand.startsWith("[BROCAST]")) {
                     String broadcastMessage = formattedCommand.replace("[BROCAST]", "").trim();
                     Component broadcastComponent = PaperColorUtil.translateColorCodes(broadcastMessage);
                     Bukkit.broadcast(broadcastComponent);
-                } else {
+                }
+                // Handle sound commands
+                else if (formattedCommand.startsWith("[SOUND]")) {
+                    String[] soundArgs = formattedCommand.replace("[SOUND]", "").trim().split(" ");
+                    if (soundArgs.length >= 1) {
+                        String soundName = soundArgs[0].replace("_", ".").toLowerCase();
+                        float volume = 1.0f; 
+                        float pitch = 1.0f;   
+                
+                        if (soundArgs.length >= 2) {
+                            try {
+                                volume = Float.parseFloat(soundArgs[1]);
+                            } catch (NumberFormatException e) {
+                                volume = 1.0f;
+                            }
+                        }
+                
+                        if (soundArgs.length >= 3) {
+                            try {
+                                pitch = Float.parseFloat(soundArgs[2]);
+                            } catch (NumberFormatException e) {
+                                pitch = 1.0f;
+                            }
+                        }
+                
+                        // Reproduce el sonido usando el nombre convertido a minúsculas
+                        player.playSound(player.getLocation(), soundName, volume, pitch);
+                    }
+                }
+                // Regular command execution
+                else {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedCommand);
                 }
             }
